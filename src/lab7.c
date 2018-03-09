@@ -234,8 +234,11 @@ Queue_t toPostfix(Queue_t infix_tokens)
 // POST: returns the result of evaluating the post-fix expression.
 int evalExpr(Queue_t expression)
 {
+	IntStack_t stack;
+	while(expression)
+	
 
-	printf("NOT IMPLEMENTED YET -- that's your job ;-)\n");
+	assert(!stackIsEmpty(stack));
 	return -1;  // STUB
 
 }
