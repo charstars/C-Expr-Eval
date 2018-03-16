@@ -27,6 +27,8 @@ bool isOpenBracket(char* token);
 bool isCloseBracket(char* token);
 bool isBracket(char* token);
 int precedence(char* token);
+void isQueueEmpty(Queue_t expression);
+int operations(IntStack_t* stack, char* token);
 
 // Experession Evaluator Functions
 Queue_t toPostfix(Queue_t infix_tokens);
@@ -232,13 +234,49 @@ Queue_t toPostfix(Queue_t infix_tokens)
 // PRE: postfix contains a valid post-fix algebraic expression, as defined above
 // 		  Variable substitutions still need to be performed.
 // POST: returns the result of evaluating the post-fix expression.
-int evalExpr(Queue_t expression)
+int evalExpr(Queue_t expression) //queue=characters
 {
-	IntStack_t stack;
-	while(expression)
-	
-
-	assert(!stackIsEmpty(stack));
-	return -1;  // STUB
-
+	IntStack_t newStack = istackCreate();
+	while(!qIsEmpty(expression))
+	{
+		char* token = qDequeue(&expression);
+		if(isOperand(token)){
+			int value = operandValue(token);
+			istackPush(&newStack, value);
+		}
+		else{
+			assert(isOperator(token));
+			operations(&newStack, token);
+		}
+	}
+	return(istackPop(&newStack));
 }
+
+
+int operations(IntStack_t* stack, char* token)
+{
+	int value;
+	int op1 = istackPop(stack);
+	int op2 = istackPop(stack);
+	switch(token[0])
+	{
+		case '+':
+			value = op2 + op1;
+			break;
+		case '-':
+			value = op2 - op1;
+			break;
+		case '/':
+			value = op2 / op1;
+			break;
+		case '*':
+			value = op2 * op1;
+			break;
+		case '%':
+			value = op2 % op1;
+			break;
+	}
+	istackPush(stack, value);
+}
+
+
